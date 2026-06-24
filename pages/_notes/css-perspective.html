@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ghi nhớ: CSS perspective</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        color-scheme: dark;
+        accent-color: #6ea8fe;
+        --bg: #0f1115;
+        --panel: #181b22;
+        --panel-2: #0b0d11;
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #e8eaed;
+        --muted: #9aa0a6;
+        --accent: #6ea8fe;
+        --glass-border: rgba(255, 255, 255, 0.55);
+        --glass-fill: rgba(110, 168, 254, 0.1);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          Arial,
+          sans-serif;
+        line-height: 1.6;
+        padding: 32px 20px 64px;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      h1 code {
+        color: var(--accent);
+      }
+      .lede {
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .stage {
+        height: 340px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 22px;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 /
+            100% 28px,
+          linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 0.045) 1px,
+              transparent 1px
+            )
+            0 0 / 28px 100%,
+          #12151b;
+      }
+      .frame {
+        width: 180px;
+        height: 240px;
+        border: 1px solid var(--glass-border);
+        background: var(--glass-fill);
+        backdrop-filter: brightness(1.4);
+        border-radius: 8px;
+        transition: transform 0.12s ease;
+      }
+      .control {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 14px;
+      }
+      .control > label {
+        width: 190px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .control input[type="range"] {
+        flex: 1;
+      }
+      .control .val {
+        width: 72px;
+        text-align: right;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+      code,
+      .code {
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+      .readout {
+        margin-top: 22px;
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 14px;
+        color: #cfe0ff;
+        word-break: break-all;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 12px;
+        min-height: 2.4em;
+      }
+      .presets {
+        margin-top: 18px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .presets button {
+        background: #20242c;
+        color: var(--text);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .presets button:hover {
+        border-color: var(--accent);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .note h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+      .note h3 code {
+        color: var(--accent);
+      }
+      .note p {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .remember h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .remember ul {
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.95;
+      }
+      .remember code {
+        color: #cfe0ff;
+      }
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .control > label {
+          width: 130px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1><code>perspective</code> — ghi nhớ nhanh</h1>
+      <p class="lede">
+        Kéo các thanh trượt để thấy <code>perspective</code> +
+        <code>rotateY</code> biến một hình chữ nhật phẳng thành khung lùi về
+        phía sau. Thử bỏ tick "Bật perspective" để thấy khác biệt rõ nhất.
+      </p>
+
+      <div class="card">
+        <div class="stage">
+          <div class="frame" id="frame"></div>
+        </div>
+
+        <div class="control">
+          <label
+            ><input type="checkbox" id="onoff" checked /> Bật perspective</label
+          >
+        </div>
+        <div class="control">
+          <label for="persp">perspective (gần ↔ xa)</label>
+          <input
+            type="range"
+            id="persp"
+            min="200"
+            max="2000"
+            step="50"
+            value="1000" />
+          <span class="val" id="persp-out">1000px</span>
+        </div>
+        <div class="control">
+          <label for="roty">rotateY (xoay dọc)</label>
+          <input
+            type="range"
+            id="roty"
+            min="-70"
+            max="70"
+            step="1"
+            value="40" />
+          <span class="val" id="roty-out">40°</span>
+        </div>
+        <div class="control">
+          <label for="rotz">rotateZ (nghiêng)</label>
+          <input
+            type="range"
+            id="rotz"
+            min="-20"
+            max="20"
+            step="1"
+            value="0" />
+          <span class="val" id="rotz-out">0°</span>
+        </div>
+
+        <div class="readout code" id="readout"></div>
+        <p class="hint" id="hint"></p>
+
+        <div class="presets">
+          <button data-p="300" data-r="40">Méo mạnh (300px)</button>
+          <button data-p="1000" data-r="40">Vừa (1000px)</button>
+          <button data-p="1800" data-r="40">Gần phẳng (1800px)</button>
+          <button data-off="1">Tắt perspective</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card note">
+          <h3><code>perspective</code></h3>
+          <p>
+            Khoảng cách giả định từ mắt đến màn hình. Số <b>nhỏ</b> = mắt gần =
+            méo mạnh. Số <b>lớn</b> = mắt xa = méo nhẹ. Đây là thứ tạo ra
+            <b>chiều sâu</b>.
+          </p>
+        </div>
+        <div class="card note">
+          <h3><code>rotateY</code></h3>
+          <p>
+            Xoay khung quanh trục dọc. Tạo ra <b>động tác xoay</b>, nhưng chỉ
+            "lùi về sau" khi có <code>perspective</code> đi kèm.
+          </p>
+        </div>
+      </div>
+
+      <div class="card remember">
+        <h3>Ghi nhớ</h3>
+        <ul>
+          <li>
+            <code>rotateY</code> tạo động tác, <code>perspective</code> tạo
+            chiều sâu — thiếu một trong hai thì không ra hiệu ứng 3D.
+          </li>
+          <li>
+            Trong cùng một <code>transform</code>,
+            <code>perspective()</code> phải đứng <b>trước</b>
+            <code>rotateY()</code>.
+          </li>
+          <li>
+            Cách khác: đặt <code>perspective</code> làm
+            <i>thuộc tính của thẻ cha</i> → mọi phần tử con chia sẻ chung một
+            điểm tụ.
+          </li>
+          <li>
+            Số <code>perspective</code> càng nhỏ thì khung "đổ" càng mạnh.
+          </li>
+          <li>
+            <code>rotateY</code> dương đổ về một bên, âm đổ về bên kia (vd
+            <code>300deg</code> = <code>-60deg</code>).
+          </li>
+          <li>
+            <code>rotateY(-34.38deg);</code> /* nhẹ */<br />
+            <code>rotateY(-55.62deg);</code> /* vừa */<br />
+            <code>rotateY(-68.75deg);</code> /* khá sâu */<br />
+            <code>rotateY(-111.25deg);</code> /* mạnh */<br />
+            <code>rotateY(-137.51deg);</code> /* rất mạnh */<br />
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var onoff = document.getElementById("onoff");
+        var persp = document.getElementById("persp");
+        var roty = document.getElementById("roty");
+        var rotz = document.getElementById("rotz");
+        var frame = document.getElementById("frame");
+        var perspOut = document.getElementById("persp-out");
+        var rotyOut = document.getElementById("roty-out");
+        var rotzOut = document.getElementById("rotz-out");
+        var readout = document.getElementById("readout");
+        var hint = document.getElementById("hint");
+
+        function update() {
+          var on = onoff.checked;
+          var p = parseInt(persp.value, 10);
+          var ry = parseInt(roty.value, 10);
+          var rz = parseInt(rotz.value, 10);
+
+          perspOut.textContent = p + "px";
+          rotyOut.textContent = ry + "°";
+          rotzOut.textContent = rz + "°";
+          persp.disabled = !on;
+          persp.style.opacity = on ? "1" : "0.4";
+
+          var parts = [];
+          if (on) parts.push("perspective(" + p + "px)");
+          parts.push("rotateY(" + ry + "deg)");
+          if (rz !== 0) parts.push("rotateZ(" + rz + "deg)");
+          var t = parts.join(" ");
+
+          frame.style.transform = t;
+          readout.textContent = "transform: " + t + ";";
+
+          if (!on) {
+            hint.textContent =
+              "Không có perspective → khung chỉ bị nén ngang (bẹp đều), không có chiều sâu.";
+          } else if (p <= 500) {
+            hint.textContent =
+              "perspective nhỏ = mắt ở rất gần → méo mạnh, hiệu ứng 3D cường điệu.";
+          } else if (p >= 1500) {
+            hint.textContent =
+              "perspective lớn = mắt ở xa → méo nhẹ, gần như phẳng.";
+          } else {
+            hint.textContent =
+              "Cạnh xa nhỏ lại, cạnh gần to ra → khung lùi về phía sau.";
+          }
+        }
+
+        onoff.addEventListener("change", update);
+        persp.addEventListener("input", update);
+        roty.addEventListener("input", update);
+        rotz.addEventListener("input", update);
+
+        var btns = document.querySelectorAll(".presets button");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function () {
+            if (this.dataset.off) {
+              onoff.checked = false;
+            } else {
+              onoff.checked = true;
+              if (this.dataset.p) persp.value = this.dataset.p;
+              if (this.dataset.r) roty.value = this.dataset.r;
+            }
+            update();
+          });
+        }
+
+        update();
+      })();
+    </script>
+  </body>
+</html>

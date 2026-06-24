@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Page</title>
+  </head>
+  <!-- FONTS -->
+  <style>
+    @font-face {
+      font-family: "BebasNeue";
+      src: url("./BebasNeue-Regular.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Horizon";
+      src: url("./Horizon\ Regular.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Wolframia";
+      src: url("./Wolframia.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Rockybilly";
+      src: url("./Rockybilly.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Yathel";
+      src: url("./Yathel\ Demo.otf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
+  <!--  -->
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      user-select: none;
+    }
+    body {
+      height: 100vh;
+      width: 100vw;
+      background: url("./background.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      position: relative;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: saturate(70%);
+    }
+
+    .frame-box {
+      height: 87%;
+      width: 8%;
+      max-width: 100px;
+      top: 47%;
+      right: 25%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+
+    .frame-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      backdrop-filter: brightness(2) saturate(160%);
+      -webkit-backdrop-filter: brightness(2) saturate(160%);
+    }
+
+    /* RIGHT FRAME */
+    .right-frame {
+      width: 30vw;
+      max-width: 200px;
+      min-width: 140px;
+      height: 100%;
+      right: 0;
+      left: auto;
+      position: absolute;
+      transform: translateX(100%) perspective(1000px) rotateY(45.62deg);
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      backdrop-filter: brightness(1.8) blur(5px) saturate(120%);
+      -webkit-backdrop-filter: brightness(1.8) blur(5px) saturate(120%);
+    }
+    .right-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
+    }
+    .right-frame > .grid {
+      display: grid;
+      grid-template: 1fr 1fr / 1fr;
+      height: 100%;
+    }
+    .right-frame > .grid > .top {
+      display: grid;
+      padding: 10px;
+      gap: 6px;
+      align-content: start;
+      text-align: right;
+      color: white;
+      font-weight: bold;
+      font-size: 10px;
+      overflow: hidden;
+    }
+    .right-frame > .grid > .top > p > span {
+      font-weight: 100;
+      line-height: 1;
+      color: gold;
+      vertical-align: -4px;
+      font-family: "Rockybilly", sans-serif;
+    }
+    .right-frame > .grid > .top > p:nth-child(1) {
+      padding-top: 10px;
+      white-space: nowrap;
+    }
+    .right-frame > .grid > .top > p:nth-child(2) {
+      text-transform: uppercase;
+    }
+    .right-frame > .grid > .top > p:nth-child(3) {
+      font-size: 8px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    /* LEFT FRAME */
+    .left-frame {
+      width: 80vw;
+      height: 100%;
+      right: auto;
+      left: 0;
+      position: absolute;
+      transform: translateX(-100%) perspective(1000px) rotateY(-45.62deg);
+      transform-origin: right center;
+      transform-style: preserve-3d;
+      backdrop-filter: brightness(1.8) saturate(160%);
+      -webkit-backdrop-filter: brightness(1.8) saturate(160%);
+    }
+    /* TAG */
+    .left-frame > .tag {
+      width: 110px;
+      height: 40px;
+      position: absolute;
+      bottom: 30%;
+      right: 0;
+      text-transform: uppercase;
+      transform-origin: right center;
+      transform: rotate(90deg) translateY(-50%) translateX(50%);
+      background: #efbc04;
+      font-size: 12px;
+      font-family: "BebasNeue", sans-serif;
+      font-weight: 700;
+      padding: 5px;
+      line-height: 1;
+      display: grid;
+      grid-template: 1fr / 2fr 1fr;
+    }
+    .left-frame > .tag > .top {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .left-frame > .tag > .top > div {
+      display: flex;
+      gap: 5px;
+    }
+    .left-frame > .tag > .top p {
+      width: fit-content;
+      display: inline-block;
+      transform: translateY(10%) translateX(5%) scaleY(1.5) scaleX(1.2);
+      letter-spacing: 1px;
+    }
+    .left-frame > .tag > .top > div > hr {
+      all: unset;
+      display: block;
+      width: 100%;
+      height: 3px;
+      margin-left: 3px;
+      background: black;
+    }
+    .left-frame > .tag > .bottom {
+      border: 3px solid black;
+      border-left: 0px;
+      display: grid;
+      grid-template: 1fr / 1fr 1fr;
+      align-items: center;
+      justify-items: center;
+      font-family: "Yathel";
+      font-size: 15px;
+      padding-right: 6px;
+    }
+    .left-frame > .tag > .bottom > p:nth-child(1) {
+      display: inline-block;
+      transform: scale(2) scaleX(2) rotateZ(100deg) translateY(6px);
+    }
+
+    .left-frame > .tag > .bottom > p:nth-child(2) {
+      display: inline-block;
+      transform: scale(1.2);
+      text-shadow:
+        0 0 1px currentColor,
+        0 0 1px currentColor;
+    }
+    /* GRD */
+    .left-frame > .grid {
+      display: grid;
+      grid-template: 140px 190px 4fr / 1fr;
+      height: 100%;
+      color: white;
+    }
+    .left-frame > .grid > .top {
+      position: relative;
+      text-align: end;
+      display: flex;
+      justify-content: flex-end;
+      clip-path: inset(-1000px -1000px 0 -5000px);
+      /* overflow-y: clip; */
+    }
+    .left-frame > .grid > .top > p {
+      position: relative;
+      transform: perspective(200px) rotateY(35deg) rotateZ(8deg)
+        translateX(-80px) translateY(-10px) translateX(-0px);
+      top: 50px;
+      right: -80px;
+      width: fit-content;
+      font-family: "Horizon";
+      font-size: 130px;
+      line-height: 1;
+    }
+    .left-frame > .grid > .top > p::before {
+      content: "Beyond the ripple";
+      position: absolute;
+      letter-spacing: 2px;
+      top: 10px;
+      right: 0;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: gold;
+      font-size: 25px;
+    }
+    .left-frame > .grid > .top > p::after {
+      content: attr(data-text);
+      position: absolute;
+      line-height: 1;
+      letter-spacing: 0px;
+      /* height: 0px; */
+      bottom: -10px;
+      left: -40px;
+      color: gold;
+      text-transform: none;
+      font-family: "Wolframia";
+      font-weight: 100;
+      font-size: 70px;
+    }
+    .left-frame > .grid > .middle {
+      border: 1px solid white;
+      padding: 20px 20px 0px 20px;
+      font-family: "Horizon";
+      border-left: 0px;
+      border-right: 0px;
+      text-transform: uppercase;
+      font-weight: bold;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+    }
+    .left-frame > .grid > .middle p {
+      position: absolute;
+      letter-spacing: 10px;
+      font-size: 200px;
+    }
+    .left-frame > .grid > .middle p::after {
+      content: attr(data-text);
+      position: absolute;
+      line-height: 1;
+      letter-spacing: 0px;
+      height: 0px;
+      bottom: 30%;
+      right: -10%;
+      color: gold;
+      text-transform: none;
+      font-family: "Wolframia";
+      font-weight: 100;
+      font-size: 90px;
+    }
+    .left-frame > .grid > .bottom {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    .left-frame > .grid > .bottom > .grid {
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      padding: 20px;
+      background: radial-gradient(
+        ellipse at bottom right,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0) 70%
+      );
+    }
+    .left-frame > .grid > .bottom > .grid > .left-box {
+      display: flex;
+      gap: 6px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      color: white;
+    }
+    .left-frame > .grid > .bottom > .grid > .left-box > p:nth-child(1) {
+      font-weight: bold;
+      font-size: 50px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .left-frame > .grid > .bottom > .grid > .left-box > p:nth-child(2) {
+      color: rgba(255, 255, 255, 0.8);
+      margin-left: 80px;
+      font-size: 20px;
+      line-height: 0.8;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .left-frame > .grid > .bottom > .grid > .right-box {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-content: flex-end;
+      justify-content: flex-end;
+      color: white;
+      text-align: end;
+      white-space: nowrap;
+    }
+    .left-frame > .grid > .bottom > .grid > .right-box > p:last-child {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-family: "Horizon";
+      font-size: 50px;
+    }
+    .left-frame > .grid > .bottom > .grid > .right-box > p:nth-child(1) {
+      font-size: 10px;
+    }
+    /*  */
+    .under-text {
+      height: fit-content;
+      position: absolute;
+      bottom: -10px;
+      transform-origin: top center;
+      /* transform: translate(-50%, 100%) perspective(400px) rotateX(72deg); */
+      transform: translate(-0%, 100%) perspective(200px) rotateY(180deg)
+        rotateX(50deg);
+    }
+    .under-text > p {
+      color: rgba(182, 182, 182, 0.8);
+      font-weight: bold;
+      text-transform: uppercase;
+      transform: scaleY(-1);
+      white-space: nowrap;
+      font-size: 200px;
+      line-height: 0.7;
+    }
+    .right-frame > .under-text {
+      /* width: 200vw; */
+      width: 100vw;
+    }
+    .left-frame > .under-text {
+      overflow: hidden;
+      width: 100%;
+      right: 0;
+      transform: translate(-0%, 100%) perspective(400px) rotateY(180deg)
+        rotateX(-45deg);
+    }
+  </style>
+  <!--  -->
+  <body>
+    <div class="overlay"></div>
+    <!--  -->
+    <div class="frame-box">
+      <div class="left-frame">
+        <div class="grid">
+          <div class="top">
+            <p data-text="Framess">Framess</p>
+          </div>
+          <div class="middle">
+            <p data-text="Wildness">Wildness</p>
+          </div>
+          <div class="bottom">
+            <div class="grid">
+              <div class="left-box">
+                <p>你好 * 界梦</p>
+                <p>
+                  I can be your light<br />
+                  I can moving of time<br />
+                  I love so deeply We <br />
+                  I find that feel
+                </p>
+              </div>
+              <div class="right-box">
+                <p>
+                  Hey there girl I can moving of fake <br />I love so willing,
+                  we find that feel, before the green door opens wide and the
+                  light shines through
+                </p>
+                <p>before the green door</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+        <div class="tag">
+          <div class="top">
+            <div>
+              <p>Beyond</p>
+              <hr />
+            </div>
+            <p>the ripple</p>
+          </div>
+          <div class="bottom">
+            <p>''</p>
+            <p>D</p>
+          </div>
+        </div>
+<!-- 
+        <div class="under-text">
+          <p>
+            before the green door before the green door before the green door
+            before the green door
+          </p>
+        </div> -->
+      </div>
+      <div class="right-frame">
+        <div class="grid">
+          <div class="top">
+            <p>(你 好 世 界<span>Realm </span>丽 梦)</p>
+            <p>Corposait archivetechlogy report</p>
+            <p>
+              When clouds veil the shining
+              <br />Wildflowers still grow among stones <br />The river quietly
+              answers <br />Patience daily song <br />Patience sees tomorrow
+              <br />Metaphobius.
+            </p>
+          </div>
+          <div class="bottom">
+            
+          </div>
+        </div>
+        <div class="under-text">
+              <p>
+                before the green door before the green door before the green
+                door before the green door
+              </p>
+            </div>
+      </div>
+    </div>
+    <!--  -->
+    <script></script>
+  </body>
+</html>
