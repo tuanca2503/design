@@ -58,14 +58,13 @@
       display: flex;
       overflow: hidden;
     }
-
     .overlay {
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
+      -webkit-backdrop-filter: saturate(70%);
       backdrop-filter: saturate(70%);
     }
-
     .frame-box {
       height: 87%;
       width: 8%;
@@ -75,15 +74,13 @@
       position: absolute;
       transform: translate(-50%, -50%);
     }
-
     .frame-box::before {
       content: "";
       position: absolute;
       inset: 0;
-      backdrop-filter: brightness(2) saturate(160%);
       -webkit-backdrop-filter: brightness(2) saturate(160%);
+      backdrop-filter: brightness(2) saturate(160%);
     }
-
     /* RIGHT FRAME */
     .right-frame {
       width: 30vw;
@@ -96,8 +93,8 @@
       transform: translateX(100%) perspective(1000px) rotateY(45.62deg);
       transform-origin: left center;
       transform-style: preserve-3d;
-      backdrop-filter: brightness(1.8) blur(5px) saturate(120%);
       -webkit-backdrop-filter: brightness(1.8) blur(5px) saturate(120%);
+      backdrop-filter: brightness(1.8) blur(5px) saturate(120%);
     }
     .right-frame::after {
       content: "";
@@ -153,8 +150,8 @@
       transform: translateX(-100%) perspective(1000px) rotateY(-45.62deg);
       transform-origin: right center;
       transform-style: preserve-3d;
-      backdrop-filter: brightness(1.8) saturate(160%);
       -webkit-backdrop-filter: brightness(1.8) saturate(160%);
+      backdrop-filter: brightness(1.8) saturate(160%);
     }
     /* TAG */
     .left-frame > .tag {
@@ -368,7 +365,7 @@
       transform-origin: top center;
       /* transform: translate(-50%, 100%) perspective(400px) rotateX(72deg); */
       transform: translate(-0%, 100%) perspective(200px) rotateY(180deg)
-        rotateX(50deg);
+        rotateX(325deg);
     }
     .under-text > p {
       color: rgba(182, 182, 182, 0.8);
@@ -440,7 +437,7 @@
             <p>D</p>
           </div>
         </div>
-<!-- 
+        <!-- 
         <div class="under-text">
           <p>
             before the green door before the green door before the green door
@@ -460,16 +457,14 @@
               <br />Metaphobius.
             </p>
           </div>
-          <div class="bottom">
-            
-          </div>
+          <div class="bottom"></div>
         </div>
         <div class="under-text">
-              <p>
-                before the green door before the green door before the green
-                door before the green door
-              </p>
-            </div>
+          <p>
+            before the green door before the green door before the green door
+            before the green door
+          </p>
+        </div>
       </div>
     </div>
     <!--  -->

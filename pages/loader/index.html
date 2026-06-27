@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo PageLoader</title>
+
+    <!-- load.js đặt sớm, KHÔNG defer, để khởi động càng sớm càng tốt -->
+    <link rel="stylesheet" href="demo.css" />
+    <script src="loader.demo.js"></script>
+    <!-- <script src="loader.demo.js"></script> -->
+
+    <script>
+      const main = new Loader("#progress-loader");
+      main.add("fonts", document.fonts.ready).start({ style: "progress" });
+
+      const s = new Loader("#spinner-loader");
+      s.add(
+        "spinner virtual",
+        new Promise((res) => setTimeout(res, 2500)),
+      ).start({ addDefault: false, style: "spinner" });
+
+      const d = new Loader("#dots-loader");
+      d.add("dots virtual", new Promise((res) => setTimeout(res, 5000))).start({
+        addDefault: false,
+        style: "dots",
+      });
+
+      const t = new Loader("#text-loader");
+      t.add("text virtual", new Promise((res) => setTimeout(res, 7500))).start({
+        addDefault: false,
+        style: "text",
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div
+      id="progress-loader"
+      style="position: fixed; z-index: 9999; background: black"></div>
+
+    <h1>Demo PageLoader</h1>
+    <p>Mở Console (F12) để xem log. Nhấn Ctrl+F5 để tải lại.</p>
+
+    <div class="box">
+      <div style="position: relative">
+        <div id="spinner-loader"></div>
+        <p>
+          Thanh load nằm trên đỉnh trang. Nó đợi: font, ảnh banner, 2 API giả
+          lập, cùng 2 mốc mặc định (DOMContentLoaded + load).
+        </p>
+        <p>
+          Mốc <code>data</code> (3.5s) cố tình chậm hơn
+          <code>window.load</code>, nên thanh sẽ giữ ở mức cao rồi mới chốt 100%
+          khi nó xong — đúng như đã bàn.
+        </p>
+      </div>
+    </div>
+
+    <div class="box">
+      <div id="dots-loader"></div>
+
+      <img src="https://picsum.photos/1200/400?x=1" alt="banner" />
+    </div>
+
+    <div class="box">
+      <div id="text-loader"></div>
+
+      <p>Vài ảnh phụ để trang nặng hơn chút:</p>
+      <img src="https://picsum.photos/800/300?x=2" alt="" />
+    </div>
+  </body>
+</html>
